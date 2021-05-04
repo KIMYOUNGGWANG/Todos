@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { MdAdd } from "react-icons/md";
-import TodoItem from "./TodoItem";
 import TodoList from "./TodoList";
 import "./Todos.scss";
 const Todos = ({ todos, onCreate, onToggle, onRemove }) => {

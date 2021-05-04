@@ -22,7 +22,9 @@ export const removeTodo = id => ({
   id,
 });
 
-const initialState = [];
+const initialState = [
+
+];
 
 export default function todos(state = initialState, action) {
   switch (action.type) {
@@ -31,11 +33,11 @@ export default function todos(state = initialState, action) {
 
     case TOGGLE_TODO:
       return state.map(todo =>
-        todo.id === nextId ? { ...todo, done: !todo.done } : todo
+        todo.id === action.id ? { ...todo, done: !todo.done } : todo
       );
 
     case REMOVE_TODO:
-      return state.filter(todo => todo.id !== nextId);
+      return state.filter(todo => todo.id !== action.id);
     default:
       return state;
   }
