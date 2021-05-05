@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import * as api from '../lib/api'
-
+import createRequestThunk from '../lib/createRequestThunk'
 const GET_POST = 'sample/GET_POST'
 const GET_POST_SUCCESS = 'sample/GET_POST_SUCCESS';
 const GET_POST_FAIL = 'sample/GET_POST_FAIL';
@@ -9,13 +9,13 @@ const GET_USERS = 'sample/GET_USERS';
 const GET_USERS_SUCCESS = 'sample/GET_USERS_SUCCESS';
 const GET_USERS_FAIL = 'sample/GET_USERS_FAIL';
 
-export const getPost = id => async dispatch =>{
+export const getPosts = id => async dispatch =>{
     dispatch({type:GET_POST});
     try{
-        const response = await api.getPost(id)
+        const post = await api.getPosts(id)
         dispatch({
             type:GET_POST_SUCCESS,
-            payload : response
+            payload : post.data       
         });
     } catch(e){
         dispatch({
@@ -33,7 +33,7 @@ export const getUsers = () => async dispatch =>{
         const response = await api.getUsers();
         dispatch({
             type:GET_USERS_SUCCESS,
-            payload : response
+            payload : response.data
         })
     }
     catch(e){
@@ -46,6 +46,9 @@ export const getUsers = () => async dispatch =>{
     }
 }
 
+// export const getPosts = createRequestThunk(GET_POST,api.getPosts);
+// export const getUsers = createRequestThunk(GET_USERS, api.getUsers)
+
 const initialState = {
     loading:{
         GET_POST : false,
@@ -57,50 +60,17 @@ const initialState = {
 
 const sample = handleActions(
    {
-       [GET_POST]: state=>({
-           ...state,
-           loading:{
-               ...state.loading,
-               GET_POST : true
-           }
-       }),
        [GET_POST_SUCCESS]: (state,action) =>({
             ...state,
-            loading: {
-                ...state.loading,
-                GET_POST: false
-            },
             post : action.payload
        }),
-       [GET_POST_FAIL]: (state, action) => ({
-           ...state,
-           loading : {
-               ...state.loading,
-               GET_POST: false,
-           }
-       }),
-       [GET_USERS] : (state) => ({
-           ...state,
-           loading: {
-               ...state.loading,
-               GET_USERS:true
-           }
-       }),
+       
+       
        [GET_USERS_SUCCESS] : (state, action) => ({
            ...state,
-           loading : {
-               ...state.loading,
-               GET_USERS : false,
-           },
            users : action.payload
        }),
-       [GET_USERS_FAIL] : (state,action) => ({
-           ...state,
-           loading : {
-               ...state.loading,
-               GET_USERS : false,
-           }
-       })
+    
    },
    initialState
 )
