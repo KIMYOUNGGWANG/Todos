@@ -3,7 +3,7 @@ import todos from "./todos";
 import sample from './sample';
 import loading from './loading'
 const rootReducer = combineReducers({
-  todos,
+  // todos,
   sample,
   loading
 });

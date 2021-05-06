@@ -10,13 +10,13 @@ export default function createRequestThunk(type, request) {
             const res = await request(params)
             dispatch({
                 type : SUCCESS,
-                paload : res.data
+                payload : res.data
             });
             dispatch(finishLoading(type))
         } catch(e) {
             dispatch({
                 type : FAIL,
-                paload : e,
+                payload : e,
                 error : true
             })
             throw e
