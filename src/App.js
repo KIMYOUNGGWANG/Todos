@@ -5,10 +5,10 @@ import TodosContainer from "./containers/TodosContainer";
 function App() {
   return (
     <div className="App">
-      {/* <TodosTemplate>
+      <TodosTemplate>
         <TodosContainer />
-      </TodosTemplate> */}
-      <SampleContainer/>
+      </TodosTemplate>
+      {/* <SampleContainer/> */}
     </div>
   );
 }

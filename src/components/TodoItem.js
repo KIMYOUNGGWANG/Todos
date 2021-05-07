@@ -14,7 +14,7 @@ const TodoItem = ({ todo, onToggle, onRemove }) => {
       <div
         className={cn("checkbox", { done })}
         style={{ textDecoration: todo.done ? "line-through" : "none" }}
-        onClick={() => onToggle(todo.id)}
+        onClick={() => onToggle(id)}
       >
         {done ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
         <div>{todo.text}</div>
