@@ -1,41 +1,56 @@
-// import { createAction } from "@reduxjs/toolkit";
-// import { createAction,handleActions } from "redux-actions";
-import {createAction, createReducer, createSlice, nanoid} from '@reduxjs/toolkit';
-const ADD_TODO = "todos/ADD_TODO";
-const TOGGLE_TODO = "todos/TOGGLE_TODO";
-const REMOVE_TODO = "todos/REMOVE_TODO";
-let nextId = 1;
+import { createSlice} from '@reduxjs/toolkit';
+import { addTodoAsync } from '../actions/todos';
 
 const initialState = []
-
+let nextId = 1;
 const todosSlice = createSlice({
-  name :'todos',
-   initialState,
-   reducers : {
-     addTodo : {
-       reducer : (state, action) => {
-         state.push(action.payload)
-       },
-
-       prepare : (text) => ({
-          payload : {id : nextId++ , text, done : false}
-       })
+    name :'todos',
+     initialState :{
+         addTodoLoading : false,
+         todos: []
      },
-     removeTodo: (state, action) => {
-         state.splice(
-         state.findIndex(todo => todo.id === action.payload.id),1)
-       },
+     reducers : {
+    //    addTodo : {
+    //      reducer : (state, action) => {
+    //        state.push(action.payload)
+    //      },
+  
+    //      prepare : (text) => ({
+    //         payload : {id : nextId++ , text, done : false}
+    //      })
+    //    },
+       removeTodo: (state, action) => {
+           state.todos.splice(
+           state.todos.findIndex(todo => todo.id === action.payload.id),1)
+         },
+  
+       toggleTodo : {
+         reducer : (state, action) => {
+         const todo =  state.todos.find(todo => todo.id === action.payload)
+         todo.done = !todo.done
+         },
+  
+       prepare : (id) => ({payload :id})
+     },
+    },
+    extraReducers: {
+        [addTodoAsync.pending] : (state, action) => {
+            state.addTodoLoading = true
+        },
+        [addTodoAsync.fulfilled] : (state,action) => {
+            state.todos.push(action.payload)
+            state.addTodoLoading = false
+        },
+        [addTodoAsync.rejected] : (state,action) => {
+            state.data = action.payload;
+            state.addTodoLoading = false
+        }
+    }
+  })
 
-     toggleTodo : {
-       reducer : (state, action) => {
-       const todo =  state.find(todo => todo.id === action.payload)
-       todo.done = !todo.done
-       },
+export const {addTodo, toggleTodo, removeTodo} = todosSlice.actions;
+export default todosSlice;
 
-     prepare : (id) => ({payload :id})
-   },
-  }
-})
 // export const addTodo = text => ({
 //   type: ADD_TODO,
 //   todo: {
@@ -115,7 +130,3 @@ const todosSlice = createSlice({
 //     state.map(todo => todo.id === action.payload ? {...todo, done :!todo.done} : todo)
 //   } )
 // })
-
-export const {addTodo, toggleTodo, removeTodo} = todosSlice.actions;
-export default todosSlice;
-// export default todos

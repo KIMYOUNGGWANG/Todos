@@ -4,7 +4,8 @@ import "./TodoList.scss";
 const TodoList = ({ todos, onToggle, onRemove }) => {
   return (
     <div className="TodoList">
-      {todos?.map(todo => (
+      {todos.addTodoLoading && "...로딩중" }
+      {todos?.todos.map(todo => (
         <TodoItem
           key={todo.id}
           todo={todo}
