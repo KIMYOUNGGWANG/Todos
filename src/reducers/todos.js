@@ -29,7 +29,6 @@ const todosSlice = createSlice({
          const todo =  state.todos.find(todo => todo.id === action.payload)
          todo.done = !todo.done
          },
-  
        prepare : (id) => ({payload :id})
      },
     },
@@ -42,7 +41,7 @@ const todosSlice = createSlice({
             state.addTodoLoading = false
         },
         [addTodoAsync.rejected] : (state,action) => {
-            state.data = action.payload;
+            state.todos = action.payload;
             state.addTodoLoading = false
         }
     }

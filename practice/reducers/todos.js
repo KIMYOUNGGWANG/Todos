@@ -1,7 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-
-const initialState = [];
-
+import {addTodoAsync} from "../actions/todos";
 const reducerSlice = createSlice({
     name : "todos",
     initialState:{
@@ -21,6 +19,19 @@ const reducerSlice = createSlice({
         },
         removeTodo : (state, action) =>{
             state.todos.splice(state.todos.findIndex(todo=>todo.id !==action.payload),1)
+        }
+    },
+    extraReducers : {
+        [addTodoAsync.pending] : (state,action) => {
+          state.addTodoLoading = true  
+        },
+        [addTodoAsync.fulfilled] : (state,action) => {
+            state.todos.push(action.payload)
+            state.addTodoLoading = false
+        },
+        [addTodoAsync.rejected] : (state, action) => {
+            state.todos = action.payload
+            state.addTodoLoading = false
         }
     }
 })
